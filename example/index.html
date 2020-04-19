@@ -1,46 +1,83 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8"/>
-    <title>Canvas tutorial</title>	
-    <script src="../src/guitarchords.js" ></script>
-    <script src="../src/guitarchords.dictionary.js" ></script>  <!-- optionnal -->
-    <script type="text/javascript">
-      function draw() {
-        // draw a chrod string by string
-        var gmajor = document.getElementById('gmajor');
-        let ctx = gmajor.getContext('2d');
-        grid(ctx);
-        drawNote(ctx,0,3);          
-        drawNote(ctx,1,2); 
-        drawNote(ctx,2,0);  // open string
-        drawX(ctx,3);   // mutted string 
-        drawNote(ctx,4,0); 
-        drawNote(ctx,5,3);             
-        
 
-        var aminor = document.getElementById('aminor');
-        let aminorctx = aminor.getContext('2d');
-        grid(aminorctx);
-        drawChord(aminorctx, [-1,0,2,2,1,0]);   // -1 for mutted string, 0 for open string
-
-        var cseven = document.getElementById('cseven');
-        let csevenctx = cseven.getContext('2d');
-        grid(csevenctx);
-        drawChord(csevenctx, gChords.open.C7); // using open chord dictionary
+<head>
+  <meta charset="utf-8" />
+  <title>Canvas tutorial</title>
+  <script src="../src/guitarchords.js"></script>
+  <script src="../src/guitarchords.dictionary.js"></script> <!-- optionnal -->
+  <script type="text/javascript">
+    function draw() {
+      // draw a chrod string by string
+      var gmajor = document.getElementById('gmajor');
+      let ctx = gmajor.getContext('2d');
+      grid(ctx);
+      drawNote(ctx, 0, 3);
+      drawNote(ctx, 1, 2);
+      drawNote(ctx, 2, 0);  // open string
+      drawX(ctx, 3);   // mutted string 
+      drawNote(ctx, 4, 0);
+      drawNote(ctx, 5, 3);
 
 
-      }
-      
+      var aminor = document.getElementById('aminor');
+      let aminorctx = aminor.getContext('2d');
+      grid(aminorctx);
+      drawChord(aminorctx, [-1, 0, 2, 2, 1, 0]);   // -1 for mutted string, 0 for open string
 
-    </script>
-    <style type="text/css">
-       /* canvas { border: 1px solid gray; } */
-    </style>
-  </head>
-  <body onload="draw();">
-    <canvas id="gmajor" width="150" height="150"></canvas>
-    <canvas id="aminor" width="150" height="150"></canvas>
-    <canvas id="cseven" width="150" height="150"></canvas>
-  </body>
+      var cseven = document.getElementById('cseven');
+      let csevenctx = cseven.getContext('2d');
+      grid(csevenctx);
+      drawChord(csevenctx, gChords.open.C7); // using open chord dictionary
+
+      // barchord example
+      var gbar = document.getElementById('gbar');
+      let gbarctx = gbar.getContext('2d');
+      grid(gbarctx);
+      drawBar(gbarctx, 0, 3);
+      drawNote(gbarctx, 1, 5);
+      drawNote(gbarctx, 2, 5);
+      drawNote(gbarctx, 4, 4);
+
+      // changing option for smaller drawing        
+      let smallcsevenctx = document.getElementById('smallcseven').getContext('2d');
+      options.grid.stringSpace = 10;
+      options.note.radius = 3;
+      options.x.width = 3;
+      grid(smallcsevenctx);
+      drawChord(smallcsevenctx, gChords.open.C7); // using open chord dictionary
+
+      // changing option for bigger drawing
+      let bigcsevenctx = document.getElementById('bigcseven').getContext('2d');
+      options.grid.stringSpace = 30;
+      options.note.radius = 12;
+      options.x.width = 10;
+      grid(bigcsevenctx);
+      drawChord(bigcsevenctx, gChords.open.C7); // using open chord dictionary
+
+    }
+
+
+  </script>
+  <style type="text/css">
+    /*  canvas { border: 1px solid gray; } */
+  </style>
+</head>
+
+<body onload="draw();">
+  <div>
+    <canvas id="gmajor" width="140" height="140"></canvas>
+    <canvas id="aminor" width="140" height="140"></canvas>
+    <canvas id="cseven" width="140" height="140"></canvas>
+    <canvas id="gbar" width="140" height="140"></canvas>
+  </div>
+  <div>
+    <canvas id="smallcseven" width="70" height="70"></canvas>
+  </div>
+  <div>
+    <canvas id="bigcseven" width="210" height="210"></canvas>
+  </div>
+
+</body>
+
 </html>

@@ -1,22 +1,37 @@
 /*
 Draw an empty grid 
 */
+
+var options = {canvas : {
+    width : 140 ,height:140},
+    grid : {
+        visible : true,
+        stringSpace : 20
+    },
+    note : { radius : 7},
+    x : { width : 6}
+}
+
 function grid(ctx) {
+    
+    let ss = options.grid.stringSpace;
+
     ctx.beginPath();
+    
     // silet
-    ctx.moveTo(20,19);
-    ctx.lineTo(120,19);
-    ctx.moveTo(20,20);
-    ctx.lineTo(120,20);
+    ctx.moveTo(ss,ss-1);
+    ctx.lineTo(6*ss,ss-1);
+    ctx.moveTo(ss,ss);
+    ctx.lineTo(6*ss,ss);
     // vertical
     for (i=0;i<6;i++) {
-     ctx.moveTo(i*20+20,20);
-     ctx.lineTo(i*20+20,120);
+     ctx.moveTo(i*ss+ss,ss);
+     ctx.lineTo(i*ss+ss,6*ss);
     }
     // horizontal
     for (i=0;i<6;i++) {
-     ctx.moveTo(20,i*20+20);
-     ctx.lineTo(120,i*20+20);
+     ctx.moveTo(ss,i*ss+ss);
+     ctx.lineTo(6*ss,i*ss+ss);
     }        
 
     ctx.closePath();
@@ -28,9 +43,11 @@ function grid(ctx) {
   */
   function drawNote(ctx,string,fret)
   {
-    var rayon = 7;          
+    let ss = options.grid.stringSpace; 
+   var radius = options.note.radius;
+
     ctx.beginPath();
-    ctx.arc(string*20+20, fret*20+10, rayon, 0,2*Math.PI, true);
+    ctx.arc(string*ss+ss, fret*ss+ss/2, radius, 0,2*Math.PI, true);
     if (fret === 0)  {  // unfretted string
         ctx.stroke();            
     }
@@ -42,14 +59,31 @@ function grid(ctx) {
   Draw an X for mutted string
   */
   function drawX(ctx, string) {
+    let ss = options.grid.stringSpace; 
+    let xw = options.x.width;
       ctx.beginPath();
-      ctx.moveTo(string*20+14,4);
-      ctx.lineTo(string*20+26,16);
-      ctx.moveTo(string*20+26,4);
-      ctx.lineTo(string*20+14,16);
+      ctx.moveTo(string*ss+ss-xw,ss/2-xw);
+      ctx.lineTo(string*ss+ss+xw,ss/2+xw);
+      ctx.moveTo(string*ss+ss+xw,ss/2-xw);
+      ctx.lineTo(string*ss+ss-xw,ss/2+xw);
       ctx.stroke();  
       ctx.closePath();
   }
+
+   /*
+  Draw a rounded shape on given string and fret
+  */
+ function drawBar(ctx,string,fret)
+ {
+    let ss = options.grid.stringSpace; 
+   var radius = options.note.radius;          
+   ctx.beginPath();
+   ctx.arc(string*ss+ss, fret*ss+ss/2, radius, 0,2*Math.PI, true);
+   ctx.fillRect(string*ss+ss,fret*ss+ss/2-radius,(5-string)*ss,2*radius);
+   ctx.arc(5*ss+ss, fret*ss+ss/2, radius, 0,2*Math.PI, true);
+   ctx.fill();
+   ctx.closePath();
+ }
 
    /*
   Draw a whole chord
