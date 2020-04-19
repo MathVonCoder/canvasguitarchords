@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <title>Canvas tutorial</title>	
     <script src="../src/guitarchords.js" ></script>
-    <script src="../src/guitarchords.dictionnary.js" ></script>  <!-- optionnal -->
+    <script src="../src/guitarchords.dictionary.js" ></script>  <!-- optionnal -->
     <script type="text/javascript">
       function draw() {
         // draw a chrod string by string
@@ -27,7 +27,7 @@
         var cseven = document.getElementById('cseven');
         let csevenctx = cseven.getContext('2d');
         grid(csevenctx);
-        drawChord(csevenctx, gChords.open.C7);   // -1 for mutted string, 0 for open string
+        drawChord(csevenctx, gChords.open.C7); // using open chord dictionary
 
 
       }
