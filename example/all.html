@@ -18,23 +18,15 @@
     <script src="../src/guitarchords.dictionary.js"></script> 
     <script type="text/javascript">
         function drawAll() {
+            var options = {grid: {stringSpace: 25 },canvas: {width: 160, height: 160}};
             let parent = document.getElementById("all");
             for (const property in gChords.open) {
                 let chordiv = document.createElement("div"); 
-                chordiv.setAttribute("class","chorddiv");
-                let chordtext = document.createElement("h3");
-                chordtext.innerHTML  = property;             
-                let canvaschild = document.createElement("canvas");                 
-                canvaschild.setAttribute("width","140");
-                canvaschild.setAttribute("height","140");
-                // put every element in dom div > text + canvas
-                chordiv.appendChild(chordtext);     
-                chordiv.appendChild(canvaschild);                           
+                chordiv.setAttribute("id",property);
                 parent.appendChild(chordiv); 
-                // draw on canvas
-                ctx = canvaschild.getContext('2d');
-                grid(ctx);
-                drawChord(ctx,gChords.open[property]);
+
+                let chord = new GChord(property,property, options);
+                chord.draw(gChords.open[property]);               
             }
         }
     </script>

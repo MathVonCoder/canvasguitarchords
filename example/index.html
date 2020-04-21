@@ -3,57 +3,64 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Canvas tutorial</title>
+  <title>Guitar chords basic</title>
+  <style>
+    div.chorddiv {
+        display:inline-block;
+        max-width: 200px;
+    }
+    .chorddiv h3 {
+        text-align: center;           
+    }
+    
+</style>
   <script src="../src/guitarchords.js"></script>
   <script src="../src/guitarchords.dictionary.js"></script> <!-- optionnal -->
   <script type="text/javascript">
     function draw() {
-      // draw a chrod string by string
-      var gmajor = document.getElementById('gmajor');
-      let ctx = gmajor.getContext('2d');
-      grid(ctx);
-      drawNote(ctx, 0, 3);
-      drawNote(ctx, 1, 2);
-      drawNote(ctx, 2, 0);  // open string
-      drawX(ctx, 3);   // mutted string 
-      drawNote(ctx, 4, 0);
-      drawNote(ctx, 5, 3);
+
+      // draw a chord
+      var gmajor = new GChord('gmajor');
+      gmajor.draw([3,2,0,0,0,3]);
+
+      // draw a chord string by string
+      var aminor = new GChord('aminor','Am');      
+      aminor.draw();  // this draw the grid only      
+      aminor.drawX(0);  // muted string
+      aminor.drawNote(1, 0);// open string
+      aminor.drawNote(2, 2);  
+      aminor.drawNote(3, 2); 
+      aminor.drawNote(4, 1);
+      aminor.drawNote(5, 0);
 
 
-      var aminor = document.getElementById('aminor');
-      let aminorctx = aminor.getContext('2d');
-      grid(aminorctx);
-      drawChord(aminorctx, [-1, 0, 2, 2, 1, 0]);   // -1 for mutted string, 0 for open string
+      // use barchords
+      var bmajor = new GChord('bmajor','B');
+      bmajor.draw([-1,'2-',4,4,3,2]);
 
-      var cseven = document.getElementById('cseven');
-      let csevenctx = cseven.getContext('2d');
-      grid(csevenctx);
-      drawChord(csevenctx, gChords.open.C7); // using open chord dictionary
+      // use dictionary
+      var cseven = new GChord('cseven','C7');
+      cseven.draw(gChords.open.C7);
+  
 
-      // barchord example
-      var gbar = document.getElementById('gbar');
-      let gbarctx = gbar.getContext('2d');
-      grid(gbarctx);
-      drawBar(gbarctx, 0, 3);
-      drawNote(gbarctx, 1, 5);
-      drawNote(gbarctx, 2, 5);
-      drawNote(gbarctx, 4, 4);
+      // minibarchord example
+      var fbar = new GChord('fbar','F minibar');
+      fbar.draw();     
+      fbar.drawX(0);      
+      fbar.drawNote(1, 3);
+      fbar.drawNote(2, 3);
+      fbar.drawNote(3, 2);      
+      fbar.drawBar(4, 1);
 
-      // changing option for smaller drawing        
-      let smallcsevenctx = document.getElementById('smallcseven').getContext('2d');
-      options.grid.stringSpace = 10;
-      options.note.radius = 3;
-      options.x.width = 3;
-      grid(smallcsevenctx);
-      drawChord(smallcsevenctx, gChords.open.C7); // using open chord dictionary
+      // changing option for smaller drawing  
+      let optionsSmall = { canvas: {width: 70, height: 70},grid:{stringSpace:10},note:{radius:3},x:{width:3}};
+      var smallcseven = new GChord('smallcseven','small C7',optionsSmall);      
+      smallcseven.draw(gChords.open.C7); // using open chord dictionary
 
       // changing option for bigger drawing
-      let bigcsevenctx = document.getElementById('bigcseven').getContext('2d');
-      options.grid.stringSpace = 30;
-      options.note.radius = 12;
-      options.x.width = 10;
-      grid(bigcsevenctx);
-      drawChord(bigcsevenctx, gChords.open.C7); // using open chord dictionary
+      let optionsBig = { canvas: {width: 210, height: 210},grid:{stringSpace:30},note:{radius:12},x:{width:10}};
+      var smallcseven = new GChord('bigcseven','big C7',optionsBig);      
+      smallcseven.draw(gChords.open.C7); // using open chord dictionary
 
     }
 
@@ -66,16 +73,17 @@
 
 <body onload="draw();">
   <div>
-    <canvas id="gmajor" width="140" height="140"></canvas>
-    <canvas id="aminor" width="140" height="140"></canvas>
-    <canvas id="cseven" width="140" height="140"></canvas>
-    <canvas id="gbar" width="140" height="140"></canvas>
+    <div id="gmajor"></div>
+    <div id="aminor"></div>
+    <div id="bmajor"></div>
+    <div id="cseven"></div>
+    <div id="fbar" ></div>
   </div>
   <div>
-    <canvas id="smallcseven" width="70" height="70"></canvas>
+    <div id="smallcseven"></div>
   </div>
   <div>
-    <canvas id="bigcseven" width="210" height="210"></canvas>
+    <div id="bigcseven"></div>
   </div>
 
 </body>
