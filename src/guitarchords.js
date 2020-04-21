@@ -2,7 +2,12 @@
 Draw an empty grid 
 */
 
-var options = {canvas : {
+
+
+class GChord {
+
+  static defaultOptions = {
+    canvas : {
     width : 140 ,height:140},
     grid : {
         visible : true,
@@ -11,6 +16,27 @@ var options = {canvas : {
     note : { radius : 7},
     x : { width : 6}
 }
+
+  constructor(elementId,options)
+  {
+    this.elementId= elementId;
+    this.options = options;
+
+    if (options === undefined) options = defaultOptiont;
+  }
+}
+
+var options = {
+  canvas : {
+  width : 140 ,height:140},
+  grid : {
+      visible : true,
+      stringSpace : 20
+  },
+  note : { radius : 7},
+  x : { width : 6}
+}
+
 
 function grid(ctx) {
     
@@ -95,7 +121,14 @@ function grid(ctx) {
       for (i=0;i<6;i++)
       {
           let fret = allnotes[i];
-          if (fret>=0) drawNote(ctx,i,fret);
+          // check if there is a notation like '2-' meaning bar on 2nd fret
+          if (typeof(fret)==='string' && fret.includes("-")) {
+            let fretbar = fret.replace('-','');
+            console.log('fret:'+fret);
+            drawBar(ctx,i,fretbar);
+          }
+          else if (fret>=0) drawNote(ctx,i,fret);
           else drawX(ctx,i);
       }
   }
+  

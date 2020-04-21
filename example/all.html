@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Guitar chords basic</title>
+    <style>
+        div.chorddiv {
+            display:inline-block;
+            max-width: 200px;
+        }
+        .chorddiv h3 {
+            text-align: center;           
+        }
+        
+    </style>
+    <script src="../src/guitarchords.js"></script>
+    <script src="../src/guitarchords.dictionary.js"></script> 
+    <script type="text/javascript">
+        function drawAll() {
+            let parent = document.getElementById("all");
+            for (const property in gChords.open) {
+                let chordiv = document.createElement("div"); 
+                chordiv.setAttribute("class","chorddiv");
+                let chordtext = document.createElement("h3");
+                chordtext.innerHTML  = property;             
+                let canvaschild = document.createElement("canvas");                 
+                canvaschild.setAttribute("width","140");
+                canvaschild.setAttribute("height","140");
+                // put every element in dom div > text + canvas
+                chordiv.appendChild(chordtext);     
+                chordiv.appendChild(canvaschild);                           
+                parent.appendChild(chordiv); 
+                // draw on canvas
+                ctx = canvaschild.getContext('2d');
+                grid(ctx);
+                drawChord(ctx,gChords.open[property]);
+            }
+        }
+    </script>
+</head>
+<body onload="drawAll();">
+<div id='all'>
+
+</div>
+</body>
+
+</html>
