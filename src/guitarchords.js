@@ -6,31 +6,58 @@ Draw an empty grid
 
 class GChord {
 
-  static defaultOptions = {
-    canvas: {
-      width: 140, height: 140
-    },
-    grid: {
-      visible: true,
-      stringSpace: 20
-    },
-    note: { radius: 7 },
-    x: { width: 6 }
+ 
+  static defaultOptions() {
+  	return {
+		canvas: {
+		  width: 140, height: 140
+		},
+		grid: {
+		  visible: true,
+		  stringSpace: 20
+		},
+		note: { radius: 7 },
+		x: { width: 6 }
+	}
   }
 
-  elementId;
-  name;
-  options;
-  ctx;
-
+  get elementId() {
+  	return this._elementId;
+  }
+  set elementId(value) {
+  	this._elementId = value;
+  }
+  
+  get name(){
+  	return this._name;
+  }
+  
+  set name(value) {
+  	this._name = value;
+  }
+  
+  get options(){
+  	return this._options;
+  }
+  set options(value) {
+  	if ( value === undefined ) {
+  		this._options = GChord.defaultOptions();
+  	} else {
+  		this._options = {...GChord.defaultOptions(),...value}
+  	}
+  }
+  
+  get ctx() {
+  	return this._ctx;
+  }
+  set ctx(value) {
+  	this._ctx = value;
+  }
+  
   constructor(elementId, name, options) {
     this.elementId = elementId;
     this.name=name;
     this.options = options;
-
-    if (options === undefined) this.options = GChord.defaultOptions;
-    else this.options = {...GChord.defaultOptions,...options}
-    
   }
 
   draw(chordAsArray) {
