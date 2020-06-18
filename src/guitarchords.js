@@ -137,7 +137,7 @@ class GChord {
   /*
   Draw a rounded shape on given string and fret
   */
-  drawNote(string, fret, finger) {
+  drawNote(string, fret) {
     let ss = this.options.grid.stringSpace;
     var radius = this.options.note.radius;
     let ctx = this.ctx;
@@ -149,10 +149,6 @@ class GChord {
     }
     else ctx.fill();
     ctx.closePath();
-    if (( finger > 0 ) &&
-     	(fret !== 0 )) {
-		this.drawFinger(string, fret, finger);
-    }
   }
   
  
@@ -177,23 +173,94 @@ class GChord {
   /*
   Draw a rounded shape on given string and fret
   */
-	drawBar(string, fret, finger) {
+	drawBarre(barreDescription) {
+	/*
+		barreDescription is an object of the form:
+		{
+		firstString: first string to barre
+		lastString: last string to barre 
+		fret: fret
+		}
+	*/
 		let ss = this.options.grid.stringSpace;
 		var radius = this.options.note.radius;
 		let ctx = this.ctx;
-
 		ctx.beginPath();
-		ctx.arc(string * ss + ss, fret * ss + ss / 2, radius, 0, 2 * Math.PI, true);
-		ctx.fillRect(string * ss + ss, fret * ss + ss / 2 - radius, (5 - string) * ss, 2 * radius);
-		ctx.arc(5 * ss + ss, fret * ss + ss / 2, radius, 0, 2 * Math.PI, true);
+		ctx.arc(barreDescription.firstString * ss + ss, 
+				barreDescription.fret * ss + ss / 2, 
+				radius, 
+				0, 
+				2 * Math.PI, 
+				true);
+		ctx.fillRect(barreDescription.firstString * ss + ss, 
+					 barreDescription.fret * ss + ss / 2 - radius, 
+					 (barreDescription.lastString - barreDescription.firstString) * ss, 
+					 2 * radius);
+		ctx.arc(barreDescription.lastString * ss + ss, 
+				barreDescription.fret * ss + ss / 2, 
+				radius, 
+				0,
+				2 * Math.PI, 
+				true);
 		ctx.fill();
 		ctx.closePath();
-		if ( finger > 0 ) {
-			this.drawFinger(string, fret, finger);
-		}
 	}
-  
- /*
+	
+	drawBase(fret) {
+	/*
+		Write out our base fret on chords which are played higher up the fretboard.
+	*/
+		var fingerSettings = this.options.fingers;
+		let ss = this.options.grid.stringSpace;
+		var radius = this.options.note.radius;
+		let ctx = this.ctx;
+		var s = ctx.fillStyle;
+		ctx.fillStyle = "black";
+		ctx.textAlign = "center";
+		ctx.textBaseline = "middle";
+		ctx.font = fingerSettings.style + 
+					" " + 
+					Math.ceil(radius * fingerSettings.multiplier) + "px " +
+					fingerSettings.font;
+		ctx.fillText(fret, ss - ss/2 , ss * 2 );
+		ctx.fillStyle = s;
+	}
+	/* 
+		Find barres in a given chord description 
+	
+		Return an array of objects describing every barre.
+	*/
+	detectBarres(chord){
+		var result = [];
+		for (var finger = 1; finger <= 4; finger++) {
+			if ( chord.fingers.indexOf(finger) != chord.fingers.lastIndexOf(finger)) {
+				// there is a barre
+				result.push({
+					firstString: chord.fingers.indexOf(finger),
+					lastString: chord.fingers.lastIndexOf(finger),
+					fret: chord.frets[chord.fingers.indexOf(finger)]
+				});
+			}
+		}
+		return result;
+	}
+	
+	getFretExtremes(frets){
+	/* 
+		Given a chord played on (frets), tell us which is the highest & lowest fret played
+	*/
+	var result = { low: 99, high: 0 };
+		for (let i = 0; i < frets.length; i++){
+			if ((frets[i] > 0) &&
+				(frets[i] < result.low))
+				result.low = frets[i];
+			if ( frets[i] > result.high )
+				result.high = frets[i];
+		}	
+		return result;
+	}
+	
+  /*
   Draw a whole chord
   allnotes is a JSON object comprising:
     frets:  array of integer  with -1 for mutted string, 0 for open string, fret value
@@ -201,27 +268,57 @@ class GChord {
     fingers (optional) : array of integer showing which fingers are applied to which string.
     
     Alternatively, call it with just a simple array and this will be interpreted as an array of frets.
+    
+    Barres will be drawn automatically if fingering is provided.
   */
 	drawChord(allnotes) {
 		var frets = [];
+		var barres = [];
 		if ( typeof allnotes.frets !== 'undefined') {
 			frets = allnotes.frets
 		} else {
 			frets = allnotes
 		}
+		/*
+			First up, get our fret extremes.  We're going to have to renumber our chord
+			if they're out of range.
+		*/
+		var extremes = this.getFretExtremes(frets);
+		
+		/* 
+			Check and rebase our chord if necessary
+		*/
+		if ( extremes.high > 5) {
+			frets = frets.map(function e(value) {
+				if (value > 0)
+					return value - ( extremes.low - 1)
+				else
+					return 0;
+				});
+			this.drawBase(extremes.low);
+		}
+		// Now draw all our notes.
 		for (let i = 0; i < 6; i++) {
-			let finger = 0;
-			if (( typeof(allnotes.fingers) == 'object') && 
-				( typeof(allnotes.fingers[i]) == 'number')) {
-				finger = allnotes.fingers[i];
+			if ( frets[i] >= 0 ) {
+				this.drawNote(i, frets[i]);
+			} else {
+				this.drawX(i);
 			}
-			let fret = frets[i];      // check if there is a notation like '2-' meaning bar on 2nd fret
-			if (typeof (fret) === 'string' && fret.includes("-")) {
-				let fretbar = fret.replace('-', '');      
-				this.drawBar(i, fretbar, finger);
+		}
+		if ( typeof allnotes.fingers !== 'undefined') {
+			// Next, check for and overlay barres.
+			var barres = this.detectBarres({frets: frets,
+											fingers: allnotes.fingers});
+			for ( let i = 0; i < barres.length; i++){
+				this.drawBarre(barres[i])
 			}
-			else if (fret >= 0) this.drawNote(i, fret, finger);
-			else this.drawX(i);
+			// Finally, overlay fingering.
+			for ( let i = 1; i <= 4; i++) {
+				if ( allnotes.fingers.includes(i) )
+					this.drawFinger(allnotes.fingers.indexOf(i), 
+									frets[allnotes.fingers.indexOf(i)],
+									i);
+			}
 		}
 	}
 }

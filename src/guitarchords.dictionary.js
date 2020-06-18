@@ -1,3 +1,19 @@
+/*
+A chord definition takes the form:
+<chord name> : {
+		frets : An array describing six strings, starting at low E.  
+			Values for individual strings are:
+			<positive int> 		: Fret
+			<negative int> 		: Mute
+			0			    	: Open
+		fingers : An array describing where to place the fingers.  Values are:
+			<positive int>		: Which finger to use.  For barres, recommend you only 
+								  include this for the first string of the barre.
+		}
+		
+		Barres are drawn automatically when suitable fingering is provided.
+*/
+
 var gChords = {
     open  : {
         C : {
@@ -33,11 +49,13 @@ var gChords = {
         	frets: 		[0,2,0,1,0,0]
         },
         F :  {
-        	frets: 		['1-',3,3,2,1,1],
-        	fingers:	[1,3,4,2,0,0]
+        	frets: 		[1,3,3,2,1,1],
+        	fingers:	[1,3,4,2,1,1]
         },
         Fm : {
-        	frets: 		 ['1-',3,3,1,1,1]
+        	frets: 		 [1,3,3,1,1,1],
+        	fingers:	[1,3,4,1,1,1]
+        	
         },
         G :  {
         	frets: 		[3,2,0,0,0,3]
@@ -58,26 +76,30 @@ var gChords = {
         	frets: 		[-1,0,2,2,3,0]
         },
         B : {
-        	frets: 		 [-1,'2-',4,4,4,2]
+        	frets: 		[-1,2,4,4,4,2],
+        	fingers:	[0,1,3,3,3,1]
         },
         B7 : {
         	frets: 		 [-1,2,1,2,0,2]
+        },
+        ABarre :{
+        	frets:		[5,7,7,6,5,5],
+        	fingers:	[1,3,4,2,1,1]
         }
     },
-    bar : {
+    barre : {
         F :   {
-        	frets: 		['1-',3,3,2,1,1],
-        	fingers:	[1,3,4,2,0,0]
+        	frets: 		[1,3,3,2,1,1],
+        	fingers:	[1,3,4,2,1,1]
         },
         G :   {
-        	frets: 		['3-',5,5,4,3,3]
+        	frets: 		[3,5,5,4,3,3],
+        	fingers:	[1,3,4,2,1,1]
         },
         B :   {
-        	frets: 		[-1,'2-',4,4,4,2]
-        },
-        Bbsus2 :   {
-        	frets: 		[-1,'2-',3,3,2,2]
-        },
+        	frets: 		[-1,2,4,4,4,2],
+        	fingers:	[0,1,3,3,3,1]
+        }
     }
     
     
