@@ -17,7 +17,13 @@ class GChord {
 		  stringSpace: 20
 		},
 		note: { radius: 7 },
-		x: { width: 6 }
+		x: { width: 6 },
+		fingers: {
+			draw: true,
+			multiplier: 1.2,
+			font: "sans-serif",
+			style: "bold"
+		}
 	}
   }
 
@@ -106,10 +112,32 @@ class GChord {
     ctx.stroke();
   }
   
+   /* Draw finger on a given string/fret */
+
+	drawFinger(string, fret, finger) {
+		var fingerSettings = this.options.fingers;
+		if ( fingerSettings.draw ){
+			let ss = this.options.grid.stringSpace;
+			var radius = this.options.note.radius;
+			let ctx = this.ctx;
+			var s = ctx.fillStyle;
+			ctx.fillStyle = "white";
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+			ctx.font = fingerSettings.style + 
+						" " + 
+						Math.ceil(radius * fingerSettings.multiplier) + "px " +
+						fingerSettings.font;
+			ctx.fillText(finger, string * ss + ss, fret * ss + ss / 2 );
+			ctx.fillStyle = s;
+    	}
+	}
+  
+  
   /*
   Draw a rounded shape on given string and fret
   */
-  drawNote(string, fret) {
+  drawNote(string, fret, finger) {
     let ss = this.options.grid.stringSpace;
     var radius = this.options.note.radius;
     let ctx = this.ctx;
@@ -121,8 +149,13 @@ class GChord {
     }
     else ctx.fill();
     ctx.closePath();
+    if (( finger > 0 ) &&
+     	(fret !== 0 )) {
+		this.drawFinger(string, fret, finger);
+    }
   }
   
+ 
   /*
   Draw an X for mutted string
   */
@@ -144,39 +177,53 @@ class GChord {
   /*
   Draw a rounded shape on given string and fret
   */
-  drawBar(string, fret) {
-    let ss = this.options.grid.stringSpace;
-    var radius = this.options.note.radius;
-    let ctx = this.ctx;
+	drawBar(string, fret, finger) {
+		let ss = this.options.grid.stringSpace;
+		var radius = this.options.note.radius;
+		let ctx = this.ctx;
 
-    ctx.beginPath();
-    ctx.arc(string * ss + ss, fret * ss + ss / 2, radius, 0, 2 * Math.PI, true);
-    ctx.fillRect(string * ss + ss, fret * ss + ss / 2 - radius, (5 - string) * ss, 2 * radius);
-    ctx.arc(5 * ss + ss, fret * ss + ss / 2, radius, 0, 2 * Math.PI, true);
-    ctx.fill();
-    ctx.closePath();
-  }
+		ctx.beginPath();
+		ctx.arc(string * ss + ss, fret * ss + ss / 2, radius, 0, 2 * Math.PI, true);
+		ctx.fillRect(string * ss + ss, fret * ss + ss / 2 - radius, (5 - string) * ss, 2 * radius);
+		ctx.arc(5 * ss + ss, fret * ss + ss / 2, radius, 0, 2 * Math.PI, true);
+		ctx.fill();
+		ctx.closePath();
+		if ( finger > 0 ) {
+			this.drawFinger(string, fret, finger);
+		}
+	}
   
-  /*
+ /*
   Draw a whole chord
-  allnotes is an array of integer
-  with -1 for mutted string, 0 for open string, fret value
-  e.g. : [-1,0,2,2,1,0]
+  allnotes is a JSON object comprising:
+    frets:  array of integer  with -1 for mutted string, 0 for open string, fret value
+    e.g. : [-1,0,2,2,1,0]
+    fingers (optional) : array of integer showing which fingers are applied to which string.
+    
+    Alternatively, call it with just a simple array and this will be interpreted as an array of frets.
   */
-  drawChord(allnotes) {
-
-    for (let i = 0; i < 6; i++) {
-      let fret = allnotes[i];
-      // check if there is a notation like '2-' meaning bar on 2nd fret
-      if (typeof (fret) === 'string' && fret.includes("-")) {
-        let fretbar = fret.replace('-', '');      
-        this.drawBar(i, fretbar);
-      }
-      else if (fret >= 0) this.drawNote(i, fret);
-      else this.drawX(i);
-    }
-  }
-
+	drawChord(allnotes) {
+		var frets = [];
+		if ( typeof allnotes.frets !== 'undefined') {
+			frets = allnotes.frets
+		} else {
+			frets = allnotes
+		}
+		for (let i = 0; i < 6; i++) {
+			let finger = 0;
+			if (( typeof(allnotes.fingers) == 'object') && 
+				( typeof(allnotes.fingers[i]) == 'number')) {
+				finger = allnotes.fingers[i];
+			}
+			let fret = frets[i];      // check if there is a notation like '2-' meaning bar on 2nd fret
+			if (typeof (fret) === 'string' && fret.includes("-")) {
+				let fretbar = fret.replace('-', '');      
+				this.drawBar(i, fretbar, finger);
+			}
+			else if (fret >= 0) this.drawNote(i, fret, finger);
+			else this.drawX(i);
+		}
+	}
 }
 
 
