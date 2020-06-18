@@ -16,7 +16,24 @@ with a `<div id="gmajor"></div>` in your html, just add this two lines of code
  gmajor.draw([3,2,0,0,0,3]);
 ```
 
-for barchord quick notation use fret-. e.g. for G `['3-',5,5,4,3,3]` 3 minus on first string indicate that ther is a bar all accross the neck. bar can start on any string.
+### advanced
+Add fingering notation by passing in an object containing both frets and the fingers to use:
+```
+ var cmajor = new GChord('cmajor');
+ cmajor.draw({frets: 		[-1,3,2,0,1,0],
+        	  fingers: 		[0,3,2,0,1,0]});
+```
+
+### Barre chords
+
+When you use fingering notation, barres will be automatically added as appropriate and - if necessary - the fret to start on will be drawn:
+
+```
+  var abarre = new GChord('abarre');
+  abarre.draw({frets:		[5,7,7,6,5,5],
+        	   fingers:		[1,3,4,2,1,1]});
+```
+
 
 ###  using the dictionnary 
 ```
@@ -30,7 +47,6 @@ generated html is very simple and allow easy css manipulation
 ```
 
 ### going further
-Basic support for bar chord.
 Basic support for larger/smaller canvas by changing options
 see example/index.html for complete code
 
