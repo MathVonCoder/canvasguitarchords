@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Guitar chords test</title>
+  <style>
+  	div.testWrapper {
+  		display: inline-block;
+  		margin: 5px;
+  		padding: 2px;
+  		border: 2px solid black;
+  		max-width: 200px;
+  	}
+  	
+  	div.testDescription {
+  	
+  	}
+    	
+    div.chorddiv {
+        display:inline-block;
+        max-width: 200px;
+    }
+    .chorddiv h3 {
+        text-align: center;           
+    }
+    
+</style>
+  <script src="../src/guitarchords.js"></script>
+  <script type="text/javascript">
+  	const ROOTS = [ "A", "A#", "Bb", "B", "C", "C#", "Db", "D", "D#", "Eb", "E", "F",
+  					"F#", "Gb", "G", "G#", "Ab" ];
+  	const FINGERINGS = [ "OPEN", "BARRE"];
+  	const TYPES = ["major", "m", "7", "m7", "maj7", "sus4", "sus2", "7sus4"];
+  	const ROOTSTRINGS = ["E", "A"];
+  	
+  	function runTest(chord){
+  		/*
+  		chord is an object, defined:
+  		chord: {
+  			fingering: 
+  			root:
+  			type:
+  			rootString:
+  		}
+  		
+  		*/
+  		var elementName = "E_" + 
+  						 (chord.root) + 
+  						 (chord.type?chord.type:"") + "_" + 
+  						 (chord.fingering?chord.fingering:"") + "_" +
+  						 (chord.rootString?chord.rootString:"");
+  						 
+  		var HTMLloc = document.getElementById("results");
+		var HTMLtestWrapper = document.createElement("div");
+		var HTMLtestDescription = document.createElement("div");
+		var HTMLtestChord = document.createElement("div");
+		HTMLtestWrapper.classList.add("testWrapper");
+		HTMLtestDescription.classList.add("testDescription");
+		HTMLtestDescription.innerHTML = "TEST:  " + 
+								chord.root + 
+								(chord.type?chord.type:"") + 
+								"<br />FINGERING: " + 
+								chord.fingering +
+								"<br />ROOT STRING: " + chord.rootString;
+		HTMLtestChord.setAttribute("id", elementName);
+		HTMLtestWrapper.appendChild(HTMLtestDescription);
+		HTMLtestWrapper.appendChild(HTMLtestChord);
+		HTMLloc.appendChild(HTMLtestWrapper);
+		var gchord = new GChord(elementName, chord.root + chord.type);
+		var result = gchord.getChord(chord);
+		if ( typeof result === 'object' ) {
+			gchord.drawChord(result);
+		} else {
+			HTMLtestDescription.innerHTML += "<br>getChord did not return an object";
+		}
+  	}
+  
+    function draw() {
+    	var i = 0;
+    	ROOTS.forEach(function(root){
+    		TYPES.forEach(function(type) {
+    			FINGERINGS.forEach(function(fingering) {
+    				ROOTSTRINGS.forEach(function(rootString) {
+    					runTest({root: root, 
+    							 type: type, 
+    							 fingering: fingering, 
+    							 rootString:rootString});
+    				});
+    				runTest({
+    					root: root,
+    					type: type,
+    					fingering: fingering
+    				});
+    			});
+    			runTest({
+    				root: root,
+    				type: type
+    			});
+    		});
+    	});
+    }
+  </script>
+</head>
+
+<body onload="draw();">
+  <div id="results">
+  
+  </div>
+
+</body>
+
+</html>

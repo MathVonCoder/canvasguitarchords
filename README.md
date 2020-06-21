@@ -40,6 +40,28 @@ When you use fingering notation, barres will be automatically added as appropria
 var cseven = new GChord('cseven','C7');
 cseven.draw(gChords.open.C7)
 ```
+### getting chords algorithmically
+```
+var chord = new GChord('loc','E');
+var c = chord.getChord({
+	root: "E",
+	fingering: "barre",
+	rootString: "A",
+	type: "major"
+});
+chord.draw(c);
+```
+"fingering", "rootstring" and "type" are optional.  Fingering will try for an open fingering and if none is found, attempt to generate
+a barre chord.  Rootstring will try for a barre chord on the E string; if that fails will root it on A. Type will default to major; supported types are:
+ - major
+ - minor
+ - 7
+ - m7
+ - maj7 
+ - sus4
+ - sus2
+ - 7sus4
+
 ### css
 generated html is very simple and allow easy css manipulation 
 ```
@@ -55,12 +77,12 @@ see example/index.html for complete code
 
 Roadmap
 -------
-* enhance predefined common chords in dictionary
 * propose a high level module (with chord and text)
-* support for upper position on the neck (e.g. A barchord start on 5 fret)
 * propose mini-barchord, for powerchord for example.
 * enable full auto-sizing based on canvas width 
 
+* enhance predefined common chords in dictionary - done.  Barre chords are calculated algorithmically.
+* support for upper position on the neck (e.g. A barchord start on 5 fret) - done
 * propose a class definition - done
 * support bar chord in quick chord methods (drawChord) - done
 * be able to adapt to other canvas size - done 

@@ -6,6 +6,214 @@ Draw an empty grid
 
 class GChord {
 
+		static _open() {
+			return  {
+				C : {
+					frets: 		[-1,3,2,0,1,0],
+					fingers: 	[0,3,2,0,1,0]
+				},
+				C7 : {
+					frets: 		[-1,3,2,3,1,0],
+					fingers:	[0,3,2,4,1,0]
+				},
+				Cmaj7 : {
+					frets:		[-1,3,2,0,0,0],
+					fingers:	[0,3,2,0,0,0]
+				},
+				Cadd9 : {
+					frets:		[-1,3,2,0,3,0]
+				},
+				D : {
+					frets: 		[-1,-1,0,2,3,2],
+					fingers:	[0,0,0,1,3,2]
+				},
+				Dm :  {
+					frets: 		[-1,-1,0,2,3,1],
+					fingers:	[0,0,0,2,3,1]
+				},
+				D7 :  {
+					frets: 		[-1,-1,0,2,1,2],
+					fingers:	[0,0,0,2,1,3]
+				},
+				Dm7	: {
+					frets:		[-1,-1,0,2,1,1],
+					fingers:	[0,0,0,2,1,1]
+				},
+				Dmaj7 : {
+					frets:		[-1,-1,0,2,2,2],
+					fingers:	[0,0,0,1,2,3]
+				},
+				Dsus4 :  {
+					frets: 		[-1,-1,0,2,3,3],
+					fingers:	[0,0,0,1,3,2]
+				},
+				E :  {
+					frets: 		[0,2,2,1,0,0],
+					fingers:	[0,2,3,1,0,0]
+				},
+				Em :  {
+					frets: 		[0,2,2,0,0,0],
+					fingers:	[0,2,3,0,0,0]
+				},
+				Em7: {
+					frets:		[0,2,0,0,0,0],
+					fingers:	[0,2,0,0,0,0]
+				},
+				E7 :  {
+					frets: 		[0,2,0,1,0,0],
+					fingers:	[0,2,0,1,0,0]
+				},
+				F :  {
+					frets: 		[-1,-1,3,2,1,1],
+					fingers:	[0,0,3,2,1,1]
+				},
+				Fmaj7: {
+					frets:		[-1,-1,3,2,1,0],
+					fingers:	[0,0,3,2,1,0]
+				},
+				Fm : {
+					frets: 		[-1,-1,3,1,1,1],
+					fingers:	[0,0,3,1,1,1]		
+				},
+				G :  {
+					frets: 		[3,2,0,0,0,3],
+					fingers:	[2,1,0,0,0,3]
+				},
+				G7 : {
+					frets: 		 [3,2,0,0,0,1],
+					fingers:	[3,2,0,0,0,1]
+				},
+				Gmaj7 : {
+					frets:		[3,2,0,0,0,2],
+					fingers:	[3,2,0,0,0,1]
+				},
+				A :  {
+					frets: 		[-1,0,2,2,2,0],
+					fingers:	[0,0,1,2,3,0]
+				},
+				Am :  {
+					frets: 		[-1,0,2,2,1,0],
+					fingers:	[0,0,2,3,1,0]
+				},
+				Am7 : {
+					frets:		[-1,0,2,0,1,0],
+					fingers:	[0,0,2,0,1,0]
+				},
+				A7 : {
+					frets: 		 [-1,0,2,0,2,0],
+					fingers:	[0,0,1,0,3,0]
+				},
+				Amaj7 : {
+					frets:		[-1,0,2,1,2,0],
+					fingers:	[0,0,2,1,3,0]
+				},
+				Asus4 :  {
+					frets: 		[-1,0,2,2,3,0],
+					fingers:	[0,0,1,2,3,0]
+				},
+				A7sus4: {
+					frets:		[-1,0,2,0,3,0],
+					fingers:	[-1,0,1,0,3,0]
+				},
+				Asus2 : {
+					frets:		[-1,0,2,2,0,0],
+					fingers:	[0,0,1,2,0,0]
+				},
+				Bm : {
+					frets:		[-1,-1,4,4,3,2],
+					fingers:	[0,0,3,4,2,1]
+				},
+				B7 : {
+					frets: 		 [-1,2,1,2,0,2],
+					fingers:	[0,2,1,3,0,4]
+				}
+			}
+		}
+
+		static _barre() {
+			return {
+		/*
+		Declare barre chords here by type.  The data structure takes the form:
+	
+		<root string> : {
+			base: <lowest chord that can be drawn at this root>
+					This can be shown as <NOTE#> or <NOTEb>; doesn't matter.
+			_<type> : {
+				frets:   [array of frets for <base> chord],
+				fingers: [fingering description for <base> chord]
+			}
+		}
+	
+		*/
+			E : {
+				base: 'F',
+				_major :   {
+					frets: 		[1,3,3,2,1,1],
+					fingers:	[1,3,4,2,1,1]
+				},
+				_m: 	{
+					frets:		[1,3,3,1,1,1],
+					fingers:	[1,3,4,1,1,1]
+				},
+				_7: {
+					frets:		[1,3,1,2,1,1],
+					fingers:	[1,3,1,2,1,1]
+				},
+				_m7: {
+					frets:		[1,3,1,1,1,1],
+					fingers:	[1,3,1,1,1,1]
+				},
+				_maj7: {
+					frets:		[1,3,2,2,1,1],
+					fingers:	[1,4,2,3,1,1]
+				},
+				_sus4: {
+					frets:		[1,3,3,3,1,1],
+					fingers:	[1,2,3,4,1,1]
+				},
+				_7sus4: {
+					frets:		[1,3,1,3,1,1],
+					fingers:	[1,2,1,4,1,1]
+				}
+			},
+			A : {
+				base:	'A#',
+				_major:	{
+					frets:   [-1,1,3,3,3,1],
+					fingers: [0,1,3,3,3,1]
+					},
+				_m: {
+					frets:	[-1,1,3,3,2,1],
+					fingers:[0,1,3,4,2,1],
+				},
+				_7: {
+					frets: 	[-1,1,3,1,3,1],
+					fingers:[-1,1,3,1,4,1]
+				},
+				_m7: {
+					frets:	[-1,1,3,1,2,1],
+					fingers:[0,1,3,1,2,1]
+				},
+				_maj7: {
+					frets:  [-1,1,3,2,3,1],
+					fingers:[-1,1,3,2,4,1] 
+				},
+				_sus4: {
+					frets:  [-1,1,3,3,4,1],
+					fingers:[0,1,2,3,4,1]
+				},
+				_sus2: {
+					frets:  [-1,1,3,3,1,1],
+					fingers:[-1,1,3,4,1,1]
+				},
+				_7sus4: {
+					frets:	[-1,1,3,1,4,1],
+					fingers:[-1,1,3,1,4,1]
+				}
+			}
+		}
+	}
+
  
   static defaultOptions() {
   	return {
@@ -65,8 +273,8 @@ class GChord {
     this.name=name;
     this.options = options;
   }
-
-  draw(chordAsArray) {
+  
+  prepareCanvas() {
     let chordiv = document.getElementById(this.elementId);    
     chordiv.setAttribute("class", "chorddiv");
     let chordtext = document.createElement("h3");
@@ -81,6 +289,10 @@ class GChord {
     // draw on canvas
     this.ctx = canvaschild.getContext('2d');
     this.grid();
+  }
+
+  draw(chordAsArray) {
+  	this.prepareCanvas();
     if (chordAsArray !== undefined)    this.drawChord(chordAsArray);
   }
 
@@ -285,6 +497,9 @@ class GChord {
 		*/
 		var extremes = this.getFretExtremes(frets);
 		
+		// Prepare our canvas
+		this.prepareCanvas();
+		
 		/* 
 			Check and rebase our chord if necessary
 		*/
@@ -293,10 +508,11 @@ class GChord {
 				if (value > 0)
 					return value - ( extremes.low - 1)
 				else
-					return 0;
+					return value;
 				});
 			this.drawBase(extremes.low);
 		}
+
 		// Now draw all our notes.
 		for (let i = 0; i < 6; i++) {
 			if ( frets[i] >= 0 ) {
@@ -320,6 +536,156 @@ class GChord {
 									i);
 			}
 		}
+	}
+	
+	getChord(description) {
+	 /* 
+	 Gets a chord based on the description given.
+	 
+	 "description" is a JSON object, defined as:
+	 description : {
+	 	root      	: Root note of the chord.
+	 	type      	: "type" of chord: eg. major, minor, 7, m7, maj7, sus4, 7sus4, sus2.  
+	 	rootString  : String on which the root note sits, given as a letter.  Optional; if this
+	 				  isn't provided, the code will just give the first thing it can find.
+	 				  This is ignored if you specify an "open" fingering.
+	 	fingering	: "open" or "barre".  Purposely done as a string so we can add 
+	 				  extra options at a later date.  Optional: if this isn't provided, 
+	 				  the code will try open and if that doesn't work, barre.
+	 }
+	 
+	 Returns false if a chord cannot be generated based on the requirements given, or an object
+	 suitable for feeding into drawChord.
+	 
+	 */
+	 		
+	    /* 
+	     	Variable/constant declaration
+	    */
+		 const _NOTESEQUENCE = [['A'],
+					['A#', 'Bb'],
+					['B'],
+					['C'],
+					['C#','Db'],
+					['D'],
+					['D#','Eb'],
+					['E'],
+					['F'],
+					['F#', 'Gb'], 
+					['G'], 
+					['G#','Ab']];	
+		Object.freeze(_NOTESEQUENCE);	
+		
+		var result = false;	
+		/* First thing's first: make sure our inputs are sane */
+		description.fingering += "";
+		description.root = description.root.charAt(0).toUpperCase() + description.root.slice(1);
+		description.type = (typeof description.type === 'string' ? description.type.toLowerCase() : 'major');
+		
+	
+		/* 
+		  Logic
+		*/
+		
+		switch ( description.fingering.toUpperCase() ) {
+			case "OPEN": 
+				result = _openGenerator(description.root, description.type);
+				break;
+			case "BARRE":
+			case "MOVEABLE": 
+				result = _barreGenerator(description.root, description.type, description.rootString);
+				break;
+			default:
+				result = _openGenerator(description.root, description.type) || 
+						 _barreGenerator(description.root, description.type, description.rootString);
+		}
+		
+		return result;
+	
+		/* 
+			Internal functions
+		*/
+		
+		function _openGenerator(root, type){
+			var result = false;
+			var chord = root + ((type != 'major') ? type : '');
+			if ( ( typeof GChord._open()[chord] == 'object')) {
+				result = GChord._open()[chord];
+			}
+			return result;
+		}
+		
+		/* 
+		 I am damned if I'm going to draw out every barre chord structure for major, minor, 7th 
+		 and so on!  This logic will generate it for me.
+		*/
+
+		function _barreGenerator(root, type, rootString){
+			/*
+			Return the barre chord fingering for the <root><type> chord based at string <rootString>
+			Returns false if a chord can't be generated.
+			
+			rootString is optional; if it's not provided, return the first chord that can be returned.
+			*/
+			function _sanityCheck(type, rootString){
+				var result = false;
+				if (( typeof GChord._barre()[rootString] == 'object' ) &&
+					( typeof GChord._barre()[rootString][type] == 'object' ) &&
+					( Array.isArray(GChord._barre()[rootString][type].fingers) ) &&
+					( Array.isArray(GChord._barre()[rootString][type].frets) ) )
+					result = true;
+				return result;
+			}
+			
+			function _getNoteLocation(note){
+			/*
+				Given a note, return where in the note sequence it lives 
+			*/
+				function _isNote(e){
+					return e.includes(note);
+				}
+
+				return _NOTESEQUENCE.findIndex(_isNote);
+			}
+			function _getRootOffset(root, rootString){
+			/*
+				Given the root note for a chord, get its offset for the required barre shape
+			*/
+				var _rootLocation = _getNoteLocation(root);
+				var _shapeLocation = _getNoteLocation(GChord._barre()[rootString].base);
+				if ( _rootLocation >= _shapeLocation )
+					return _rootLocation - _shapeLocation;
+				else 
+					return _NOTESEQUENCE.length - _shapeLocation + _rootLocation;
+			}
+			function _calculateFrets(offset, frets) {
+				return frets.map(function e(f) {
+					if ( f > 0 )
+						return f + offset;
+					else
+						return f;
+					})
+			}
+			
+			var result = false;
+				
+			if ( typeof rootString === 'string') {
+				rootString = rootString.toUpperCase();
+				if ( _sanityCheck('_' + type, rootString)) {
+					result = {};
+					result.fingers = GChord._barre()[rootString]['_'+type].fingers;
+					result.frets = _calculateFrets(_getRootOffset(root, rootString), GChord._barre()[rootString]['_'+type].frets);
+				}
+			} else {
+				var roots = Object.keys(GChord._barre());
+				for (var i = 0; i < roots.length; i++) {
+					result = _barreGenerator(root, type, roots[i]);
+					if ( result ) { break; }
+				}
+			}
+			return result;
+		}
+		
 	}
 }
 
