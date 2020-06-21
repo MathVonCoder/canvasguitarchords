@@ -38,22 +38,23 @@
       var bmajor = new GChord('bmajor','B');
       bmajor.draw([-1,'2-',4,4,3,2]);
 
-      // use dictionary
+      // use dictionary for an open chord.
       var cseven = new GChord('cseven','C7');
       cseven.draw(gChords.open.C7);
+      
+      // use dictionary for a barre chord.
+      var bbarre = new GChord('bbarre','B');
+      bbarre.draw(gChords.barre.B);
   
 
       // minibarchord example
       var fbar = new GChord('fbar','F minibar');
-      fbar.draw();     
-      fbar.drawX(0);      
-      fbar.drawNote(1, 3);
-      fbar.drawNote(2, 3);
-      fbar.drawNote(3, 2);      
-      fbar.drawBar(4, 1);
-
+      fbar.draw({ frets: 	[-1,3,3,2,1,1],
+      			  fingers:	[0,3,4,2,1,1]
+      });     
+      
       // changing option for smaller drawing  
-      let optionsSmall = { canvas: {width: 70, height: 70},grid:{stringSpace:10},note:{radius:3},x:{width:3}};
+      let optionsSmall = { canvas: {width: 70, height: 70},grid:{stringSpace:10},note:{radius:3},x:{width:3}, fingers:{draw:false}};
       var smallcseven = new GChord('smallcseven','small C7',optionsSmall);      
       smallcseven.draw(gChords.open.C7); // using open chord dictionary
 
@@ -77,6 +78,7 @@
     <div id="aminor"></div>
     <div id="bmajor"></div>
     <div id="cseven"></div>
+    <div id="bbarre"></div>
     <div id="fbar" ></div>
   </div>
   <div>
