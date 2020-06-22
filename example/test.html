@@ -5,6 +5,20 @@
   <meta charset="utf-8" />
   <title>Guitar chords test</title>
   <style>
+  
+  	#resizeableWrapper {
+  		margin: 5px;
+  		padding: 2px;
+  		border: 2px solid;
+  	}
+  	
+  	#resizeable {
+  		min-height: 850px;
+  		width: 100%;
+  		margin: 0 auto;
+  		text-align: center;
+  	}
+  	
   	div.testWrapper {
   		display: inline-block;
   		margin: 5px;
@@ -19,7 +33,6 @@
     	
     div.chorddiv {
         display:inline-block;
-        max-width: 200px;
     }
     .chorddiv h3 {
         text-align: center;           
@@ -77,6 +90,9 @@
   	}
   
     function draw() {
+    	var g = new GChord("resizeable", "A", {fillContainer: true});
+    	var chord = g.getChord({root: "A", fingering: "BARRE"})
+    	g.drawChord(chord);
     	var i = 0;
     	ROOTS.forEach(function(root){
     		TYPES.forEach(function(type) {
@@ -104,6 +120,15 @@
 </head>
 
 <body onload="draw();">
+  <div id="resizeableWrapper">
+  	<div id="resizeableHeader">
+		<div class="testDescription">
+		TEST: Dynamically resizeable A barre chord.
+		</div>
+  	</div>
+  	<div id="resizeable">
+  	</div>
+  </div>
   <div id="results">
   
   </div>

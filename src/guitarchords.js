@@ -217,6 +217,16 @@ class GChord {
  
   static defaultOptions() {
   	return {
+  		fillContainer : false, // if true, draw the canvas to fill the parent container.
+  		containerSizing : {
+  		/* For container sizing.  Divide canvas width by the number here to get the
+  		   relevant sizing */
+  			stringSpace: 7,
+  			note: 20,
+  			x: 23,
+  			fingers: 24,
+  			fingersMinimum: 4 // Minimum font size for showing fingering.  
+  		},
 		canvas: {
 		  width: 140, height: 140
 		},
@@ -268,32 +278,84 @@ class GChord {
   	this._ctx = value;
   }
   
+  get headingElement() {
+  	return this._headingElement;
+  }
+  
+  set headingElement(value) {
+    this._headingElement = value;
+  }
+  
+  get canvasElement() {
+  	return this._canvasElement;
+  }
+  
+  set canvasElement(value) {
+  	this._canvasElement = value;
+  }
+  
   constructor(elementId, name, options) {
     this.elementId = elementId;
     this.name=name;
     this.options = options;
   }
   
+  registerResizeHandler(f, a){
+	window.onresize = this.onResize.bind(this,f,a);
+  }
+
+  onResize(f,a){
+	this[f](a);
+  }
+	
   prepareCanvas() {
-    let chordiv = document.getElementById(this.elementId);    
-    chordiv.setAttribute("class", "chorddiv");
-    let chordtext = document.createElement("h3");
-    if (this.name !== undefined) chordtext.innerHTML = this.name;
-    let canvaschild = document.createElement("canvas");
-    canvaschild.setAttribute("width", this.options.canvas.width);
-    canvaschild.setAttribute("height", this.options.canvas.height);
-    // put every element in dom div > text + canvas
-    chordiv.appendChild(chordtext);
-    chordiv.appendChild(canvaschild);
+    let chordiv = document.getElementById(this.elementId);  
+  	if (this.canvasElement !== undefined ) {
+  		// we are redrawing
+  		this.canvasElement.parentNode.removeChild(this.canvasElement);
+  	} else {
+		// we are drawing for the first time.
+		chordiv.setAttribute("class", "chorddiv");
+		this.headingElement = document.createElement("h3");
+		if (this.name !== undefined) this.headingElement.innerHTML = this.name;
+		 // put every element in dom div > text + canvas
+		chordiv.appendChild(this.headingElement);
+	}
+  	if ( this.options.fillContainer ){
+  		// we should fill the container element dynamically rather than using a fixed size.
+  		let headerStyles = window.getComputedStyle(this.headingElement);
+  		let margin = parseFloat(headerStyles['marginTop']) +
+  					 parseFloat(headerStyles['marginBottom']);
+  		let headerHeight = Math.ceil(this.headingElement.offsetHeight + margin);
+  		let size = (chordiv.clientWidth > (chordiv.clientHeight - headerHeight)) ? 	
+  					(chordiv.clientHeight - headerHeight) :
+  					 chordiv.clientWidth;
+  		if ( size < 0 ) size = 0;
+  		this.options.canvas.width = this.options.canvas.height = size;
+  		this.options.grid.stringSpace = size / this.options.containerSizing.stringSpace;
+  		this.options.note.radius = size / this.options.containerSizing.note;
+  		this.options.x.width = size / this.options.containerSizing.x;
+  	}
+    this.canvasElement = document.createElement("canvas");
+    this.canvasElement.setAttribute("width", this.options.canvas.width);
+    this.canvasElement.setAttribute("height", this.options.canvas.height);
+    chordiv.appendChild(this.canvasElement);
     //parent.appendChild(chordiv);
     // draw on canvas
-    this.ctx = canvaschild.getContext('2d');
+    this.ctx = this.canvasElement.getContext('2d');
     this.grid();
   }
 
   draw(chordAsArray) {
+	if (( this.options.fillContainer ) && 
+		( this.canvasElement === undefined)) {
+		// only set this up first time around.
+		this.registerResizeHandler("draw", chordAsArray);
+	}
   	this.prepareCanvas();
-    if (chordAsArray !== undefined)    this.drawChord(chordAsArray);
+    if (chordAsArray !== undefined) {
+    	this.drawChord(chordAsArray);
+  	}
   }
 
   grid() {
@@ -497,9 +559,16 @@ class GChord {
 		*/
 		var extremes = this.getFretExtremes(frets);
 		
+		// Set up dynamic redraw event listener if necessary
+		if (( this.options.fillContainer ) && 
+			( this.canvasElement === undefined)) {
+			// only set this up first time around.
+			this.registerResizeHandler("drawChord", allnotes);
+		}
+			
 		// Prepare our canvas
 		this.prepareCanvas();
-		
+
 		/* 
 			Check and rebase our chord if necessary
 		*/

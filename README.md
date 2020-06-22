@@ -24,6 +24,13 @@ Add fingering notation by passing in an object containing both frets and the fin
         	  fingers: 		[0,3,2,0,1,0]});
 ```
 
+Have your chord dynamically fill the parent container by passing in fillContainer: true as an option.  When the parent container is resized, the chord will be
+redrawn accordingly.
+```
+ var g = new GChord('resizeable', 'A', {fillContainer: true});
+ g.drawChord(g.getChord({root: "A", fingering: "BARRE"});
+```
+
 ### Barre chords
 
 When you use fingering notation, barres will be automatically added as appropriate and - if necessary - the fret to start on will be drawn:
@@ -79,8 +86,9 @@ Roadmap
 -------
 * propose a high level module (with chord and text)
 * propose mini-barchord, for powerchord for example.
-* enable full auto-sizing based on canvas width 
 
+
+* enable full auto-sizing based on canvas width  - done
 * enhance predefined common chords in dictionary - done.  Barre chords are calculated algorithmically.
 * support for upper position on the neck (e.g. A barchord start on 5 fret) - done
 * propose a class definition - done
