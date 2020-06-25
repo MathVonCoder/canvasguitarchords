@@ -347,14 +347,39 @@ class GChord {
   }
 
   draw(chordAsArray) {
-	if (( this.options.fillContainer ) && 
-		( this.canvasElement === undefined)) {
-		// only set this up first time around.
-		this.registerResizeHandler("draw", chordAsArray);
-	}
-  	this.prepareCanvas();
-    if (chordAsArray !== undefined) {
-    	this.drawChord(chordAsArray);
+	  function _parseChord(chord) {
+		/* 
+		Arguments: chord : a string describing a chord.
+		Return:  an object describing a drawable chord suitable for passing into drawChord
+		*/
+		var result = false;
+		if ( typeof chord === "string" ) {
+			var slicePoint;
+			switch (chord.charAt(1)) {
+				case 'b':
+				case '#':
+					slicePoint = 2;
+					break;
+				default:
+					slicePoint = 1;
+			}
+			var chordObject = {
+				root: chord.slice(0,slicePoint),
+				type: chord.slice(slicePoint)
+			};
+			result = this.getChord(chordObject);
+		}
+		return result;
+	  }
+
+  	switch (typeof chordAsArray) {
+  		case "object": this.drawChord(chordAsArray);
+  			break;
+  		case "string": var chord = _parseChord.bind(this, chordAsArray)(); 
+  				// _parseChord needs access to the object because it's going to call this.getChord
+  			if (chord) this.drawChord(chord);
+  			break;
+  		default: return false;
   	}
   }
 

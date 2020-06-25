@@ -47,6 +47,33 @@
   	const TYPES = ["major", "m", "7", "m7", "maj7", "sus4", "sus2", "7sus4"];
   	const ROOTSTRINGS = ["E", "A"];
   	
+  	function toggle(e) {
+	  var x = document.getElementById(e);
+	  if (x.style.display === "none") {
+		x.style.display = "block";
+	  } else {
+		x.style.display = "none";
+	  }
+	}
+	
+  	function testParser(chord) {
+  	 /* chord is a string describing a chord */
+  		var elementName = "PARSE_" + chord;
+  		var HTMLloc = document.getElementById("parseResults");
+		var HTMLtestWrapper = document.createElement("div");
+		var HTMLtestDescription = document.createElement("div");
+		var HTMLtestChord = document.createElement("div");
+		HTMLtestWrapper.classList.add("testWrapper");
+		HTMLtestDescription.classList.add("testDescription");
+		HTMLtestDescription.innerHTML = "PARSER TEST:  " + chord;
+		HTMLtestChord.setAttribute("id", elementName);
+		HTMLtestWrapper.appendChild(HTMLtestDescription);
+		HTMLtestWrapper.appendChild(HTMLtestChord);
+		HTMLloc.appendChild(HTMLtestWrapper);
+		var gchord = new GChord(elementName, chord);
+		gchord.draw(chord);
+  	}
+  	
   	function runTest(chord){
   		/*
   		chord is an object, defined:
@@ -96,6 +123,7 @@
     	var i = 0;
     	ROOTS.forEach(function(root){
     		TYPES.forEach(function(type) {
+    			testParser(root + type);
     			FINGERINGS.forEach(function(fingering) {
     				ROOTSTRINGS.forEach(function(rootString) {
     					runTest({root: root, 
@@ -120,6 +148,12 @@
 </head>
 
 <body onload="draw();">
+  <h1>
+	TESTS: CLICK HEADINGS TO TOGGLE
+  </h1>
+  <h1 onclick="toggle('resizeableWrapper')">
+  	 Dynamically resizeable chord
+  </h1>
   <div id="resizeableWrapper">
   	<div id="resizeableHeader">
 		<div class="testDescription">
@@ -129,10 +163,18 @@
   	<div id="resizeable">
   	</div>
   </div>
+  <h1 onclick="toggle('results')">
+  	Drawing chords described in object form
+  </h1>
   <div id="results">
   
   </div>
-
+  <h1 onclick="toggle('parseResults')">
+    Drawing chords described in string form
+  </h1>
+  <div id="parseResults">
+  </div>
+  
 </body>
 
 </html>
