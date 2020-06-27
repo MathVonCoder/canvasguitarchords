@@ -16,12 +16,26 @@ with a `<div id="gmajor"></div>` in your html, just add this two lines of code
  gmajor.draw([3,2,0,0,0,3]);
 ```
 
+If you'd rather let the function figure out for itself how to draw the chord:
+
+```
+ var gminor = new GChord('gminor');
+ gminor.draw("Gm");
+```
+
 ### advanced
 Add fingering notation by passing in an object containing both frets and the fingers to use:
 ```
  var cmajor = new GChord('cmajor');
  cmajor.draw({frets: 		[-1,3,2,0,1,0],
         	  fingers: 		[0,3,2,0,1,0]});
+```
+
+Have your chord dynamically fill the parent container by passing in fillContainer: true as an option.  When the parent container is resized, the chord will be
+redrawn accordingly.
+```
+ var g = new GChord('resizeable', 'A', {fillContainer: true});
+ g.drawChord(g.getChord({root: "A", fingering: "BARRE"});
 ```
 
 ### Barre chords
@@ -40,7 +54,10 @@ When you use fingering notation, barres will be automatically added as appropria
 var cseven = new GChord('cseven','C7');
 cseven.draw(gChords.open.C7)
 ```
-### getting chords algorithmically
+### Super advanced: getting chords algorithmically
+If you want to generate chords with certain things specified (eg. "I want a barre chord rooted on the A string"),
+you'll need to use this
+
 ```
 var chord = new GChord('loc','E');
 var c = chord.getChord({
@@ -79,8 +96,9 @@ Roadmap
 -------
 * propose a high level module (with chord and text)
 * propose mini-barchord, for powerchord for example.
-* enable full auto-sizing based on canvas width 
 
+
+* enable full auto-sizing based on canvas width  - done
 * enhance predefined common chords in dictionary - done.  Barre chords are calculated algorithmically.
 * support for upper position on the neck (e.g. A barchord start on 5 fret) - done
 * propose a class definition - done
